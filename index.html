@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swapnil Ingole - Portfolio</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-light: #3b82f6;
+            --bg: #f4f8fb;
+            --white: #fff;
+            --text: #222;
+            --card-shadow: 0 4px 16px rgba(37,99,235,0.07);
+        }
+        html, body {
+            margin: 0;
+            padding: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Roboto', Arial, sans-serif;
+        }
+        header {
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+            color: var(--white);
+            text-align: center;
+            padding: 3rem 1rem 2rem 1rem;
+            border-radius: 0 0 24px 24px;
+            box-shadow: var(--card-shadow);
+        }
+        header h1 {
+            font-family: 'Montserrat', Arial, sans-serif;
+            font-size: 2.8rem;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+        header p {
+            font-size: 1.2rem;
+            margin-top: 0;
+        }
+        section {
+            max-width: 850px;
+            margin: 2.5rem auto;
+            padding: 2rem 1.5rem;
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+        }
+        h2 {
+            color: var(--primary);
+            font-family: 'Montserrat', Arial, sans-serif;
+            margin-top: 0;
+            margin-bottom: 1rem;
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        ul {
+            margin-left: 1.5rem;
+            margin-bottom: 0;
+        }
+        .project {
+            background: #f6faff;
+            border: 1px solid #e3eefe;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(37,99,235,0.04);
+            padding: 1.2rem 1rem 1rem 1rem;
+            margin-bottom: 1.5rem;
+            transition: transform 0.15s, box-shadow 0.15s;
+            cursor: pointer;
+        }
+        .project:hover {
+            transform: translateY(-4px) scale(1.01);
+            box-shadow: 0 8px 24px rgba(37,99,235,0.10);
+        }
+        .contact-links {
+            margin-top: 1rem;
+        }
+        .contact-links a {
+            display: inline-block;
+            margin-right: 1.2rem;
+            color: var(--primary);
+            font-size: 1.2rem;
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .contact-links a:hover {
+            color: var(--primary-light);
+            text-decoration: underline;
+        }
+
+        /* Skills Card Component */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        .skill-card {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border: 2px solid transparent;
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .skill-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(37, 99, 235, 0.1), transparent);
+            transition: left 0.5s;
+        }
+        .skill-card:hover::before {
+            left: 100%;
+        }
+        .skill-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary);
+            box-shadow: 0 12px 32px rgba(37, 99, 235, 0.15);
+        }
+        .skill-card i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: block;
+        }
+        .skill-card h3 {
+            font-family: 'Montserrat', Arial, sans-serif;
+            color: var(--text);
+            margin: 0 0 0.5rem 0;
+            font-size: 1.2rem;
+        }
+        .skill-card p {
+            color: #666;
+            font-size: 0.9rem;
+            margin: 0;
+            line-height: 1.4;
+        }
+        .skill-level {
+            margin-top: 1rem;
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .skill-progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+            border-radius: 3px;
+            transition: width 1s ease;
+        }
+
+        /* Modal Component */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+        }
+        .modal-content {
+            background-color: var(--white);
+            margin: 5% auto;
+            padding: 2rem;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 600px;
+            position: relative;
+            animation: modalSlideIn 0.3s ease;
+        }
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+        }
+        .close:hover {
+            color: var(--primary);
+        }
+        .modal-header {
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .modal-header h2 {
+            color: var(--primary);
+            margin: 0;
+            font-size: 1.8rem;
+        }
+        .project-details {
+            margin-bottom: 1.5rem;
+        }
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+        .tech-tag {
+            background: var(--primary);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        .project-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        .btn-primary:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background: #f1f5f9;
+            color: var(--text);
+            border: 1px solid #e2e8f0;
+        }
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            header {
+                padding: 2rem 0.5rem 1.2rem 0.5rem;
+            }
+            section {
+                padding: 1.2rem 0.5rem;
+            }
+            h2 {
+                font-size: 1.3rem;
+            }
+            .skills-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .modal-content {
+                margin: 10% auto;
+                padding: 1.5rem;
+                width: 95%;
+            }
+            .project-links {
+                flex-direction: column;
+            }
+        }
+        /* Footer */
+        footer {
+            text-align: center;
+            color: #888;
+            font-size: 1rem;
+            margin: 2rem 0 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Swapnil Ingole</h1>
+        <p>Welcome to my personal portfolio website!</p>
+    </header>
+
+    <section id="about-me">
+        <h2><i class="fa-solid fa-user"></i> About Me</h2>
+        <p>
+            I'm an engineering student with a strong interest in software development, web technologies, and problem-solving. I'm passionate about building efficient, user-friendly applications and continuously improving my programming skills. My goal is to become a well-rounded developer capable of creating meaningful tech solutions.
+        </p>
+    </section>
+
+    <section id="skills">
+        <h2><i class="fa-solid fa-code"></i> Skills</h2>
+        <div class="skills-grid">
+            <div class="skill-card" data-skill="C++">
+                <i class="fab fa-cpp"></i>
+                <h3>C++</h3>
+                <p>Advanced programming with object-oriented design and data structures</p>
+                <div class="skill-level">
+                    <div class="skill-progress" style="width: 85%"></div>
+                </div>
+            </div>
+            <div class="skill-card" data-skill="Java">
+                <i class="fab fa-java"></i>
+                <h3>Java</h3>
+                <p>Enterprise development with Spring framework and microservices</p>
+                <div class="skill-level">
+                    <div class="skill-progress" style="width: 80%"></div>
+                </div>
+            </div>
+            <div class="skill-card" data-skill="SQL">
+                <i class="fas fa-database"></i>
+                <h3>SQL</h3>
+                <p>Database design, optimization, and complex query development</p>
+                <div class="skill-level">
+                    <div class="skill-progress" style="width: 90%"></div>
+                </div>
+            </div>
+            <div class="skill-card" data-skill="MERN">
+                <i class="fab fa-react"></i>
+                <h3>MERN Stack</h3>
+                <p>Full-stack development with MongoDB, Express, React, and Node.js</p>
+                <div class="skill-level">
+                    <div class="skill-progress" style="width: 75%"></div>
+                </div>
+            </div>
+            <div class="skill-card" data-skill="Git">
+                <i class="fab fa-github"></i>
+                <h3>GitHub</h3>
+                <p>Version control, collaboration, and project management</p>
+                <div class="skill-level">
+                    <div class="skill-progress" style="width: 85%"></div>
+                </div>
+            </div>
+            <div class="skill-card" data-skill="AI/ML">
+                <i class="fas fa-brain"></i>
+                <h3>AI/ML</h3>
+                <p>Machine learning algorithms and artificial intelligence applications</p>
+                <div class="skill-level">
+                    <div class="skill-progress" style="width: 70%"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="interests">
+        <h2><i class="fa-solid fa-lightbulb"></i> Interests</h2>
+        <ul>
+            <li>Web Development</li>
+            <li>Artificial Intelligence & Machine Learning</li>
+        </ul>
+    </section>
+
+    <section id="projects">
+        <h2><i class="fa-solid fa-diagram-project"></i> Projects</h2>
+        <div class="project" data-project="ecommerce">
+            <h3>E-Commerce Website</h3>
+            <p>A full-featured e-commerce platform built using the MERN stack. Features include product listings, user authentication, and a shopping cart.</p>
+        </div>
+        <div class="project" data-project="face-recognition">
+            <h3>Face Recognition App</h3>
+            <p>An application that uses machine learning techniques to recognize faces from images or video streams.</p>
+        </div>
+    </section>
+
+    <!-- Modal Component -->
+    <div id="projectModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="modal-header">
+                <h2 id="modalTitle">Project Details</h2>
+            </div>
+            <div id="modalBody">
+                <!-- Content will be dynamically populated -->
+            </div>
+        </div>
+    </div>
+
+    <section id="contact">
+        <h2><i class="fa-solid fa-envelope"></i> Contact Information</h2>
+        <p>Email: <a href="mailto:swapnilingole008@gmail.com">swapnilingole008@gmail.com</a></p>
+        <div class="contact-links">
+            <a href="https://www.linkedin.com/in/swapnil-ingole-903bb3370/" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
+            <a href="https://github.com/swapnilingole008" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+        </div>
+    </section>
+
+    <footer>
+        &copy; 2024 Swapnil Ingole. All rights reserved.
+    </footer>
+
+    <script>
+        // Project data for modal
+        const projectData = {
+            'ecommerce': {
+                title: 'E-Commerce Website',
+                description: 'A comprehensive e-commerce platform built using the MERN stack (MongoDB, Express.js, React.js, Node.js). This project demonstrates full-stack development capabilities with modern web technologies.',
+                features: [
+                    'User authentication and authorization',
+                    'Product catalog with search and filtering',
+                    'Shopping cart and checkout system',
+                    'Admin dashboard for inventory management',
+                    'Payment integration with Stripe',
+                    'Responsive design for mobile devices'
+                ],
+                techStack: ['React.js', 'Node.js', 'Express.js', 'MongoDB', 'Stripe API', 'JWT'],
+                liveUrl: '#',
+                githubUrl: '#'
+            },
+            'face-recognition': {
+                title: 'Face Recognition App',
+                description: 'An advanced face recognition application that uses machine learning algorithms to identify and verify faces from images or real-time video streams. Built with Python and OpenCV.',
+                features: [
+                    'Real-time face detection and recognition',
+                    'Multiple face tracking capabilities',
+                    'High accuracy recognition algorithms',
+                    'User-friendly web interface',
+                    'Database storage for known faces',
+                    'API endpoints for integration'
+                ],
+                techStack: ['Python', 'OpenCV', 'TensorFlow', 'Flask', 'SQLite', 'HTML/CSS'],
+                liveUrl: '#',
+                githubUrl: '#'
+            }
+        };
+
+        // Modal functionality
+        const modal = document.getElementById('projectModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalBody = document.getElementById('modalBody');
+        const closeBtn = document.querySelector('.close');
+
+        // Open modal when project is clicked
+        document.querySelectorAll('.project').forEach(project => {
+            project.addEventListener('click', function() {
+                const projectId = this.getAttribute('data-project');
+                const project = projectData[projectId];
+                
+                if (project) {
+                    modalTitle.textContent = project.title;
+                    modalBody.innerHTML = `
+                        <div class="project-details">
+                            <p>${project.description}</p>
+                            
+                            <h3>Key Features:</h3>
+                            <ul>
+                                ${project.features.map(feature => `<li>${feature}</li>`).join('')}
+                            </ul>
+                            
+                            <h3>Technology Stack:</h3>
+                            <div class="tech-stack">
+                                ${project.techStack.map(tech => `<span class="tech-tag">${tech}</span>`).join('')}
+                            </div>
+                            
+                            <div class="project-links">
+                                <a href="${project.liveUrl}" class="btn btn-primary" target="_blank">
+                                    <i class="fas fa-external-link-alt"></i> Live Demo
+                                </a>
+                                <a href="${project.githubUrl}" class="btn btn-secondary" target="_blank">
+                                    <i class="fab fa-github"></i> Source Code
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                    modal.style.display = 'block';
+                }
+            });
+        });
+
+        // Close modal
+        closeBtn.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && modal.style.display === 'block') {
+                modal.style.display = 'none';
+            }
+        });
+
+        // Skill card animations
+        document.querySelectorAll('.skill-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-8px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Animate skill progress bars on scroll
+        const observerOptions = {
+            threshold: 0.5,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const progressBar = entry.target.querySelector('.skill-progress');
+                    if (progressBar) {
+                        progressBar.style.width = progressBar.style.width;
+                    }
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.skill-card').forEach(card => {
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html> 
